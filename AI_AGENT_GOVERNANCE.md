@@ -35,4 +35,5 @@ These phrases never authorize credential storage. They also do not authorize spe
 
 - Verify the static experience locally
 - Verify no test submission reaches Airtable or HubSpot
+- HubSpot is The Love Group's only CRM. Never add, restore, recommend, or imply another CRM.
 <!-- END:TLG-AI-GOVERNANCE -->

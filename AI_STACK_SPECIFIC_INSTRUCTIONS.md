@@ -86,4 +86,5 @@ These instructions apply in addition to `../AI_AGENT_GOVERNANCE.md`. When a serv
 
 - Verify the static experience locally
 - Verify no test submission reaches Airtable or HubSpot
+- HubSpot is The Love Group's only CRM. Never add, restore, recommend, or imply another CRM.
 <!-- END:TLG-AI-GOVERNANCE -->
