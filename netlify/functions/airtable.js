@@ -6,9 +6,27 @@ const BASE_ID = "app5L7ryHd3yqb7Js";
 const TABLE_ID = "tblnEx2oQXf8enweM";
 const VIEW = "Checklist";
 const AT = "https://api.airtable.com/v0";
+const PUBLIC_FIELDS = ["Checklist Item", "Stage", "Status", "Done"];
+
+function airtableToken() {
+  if (typeof Netlify !== "undefined" && Netlify.env && typeof Netlify.env.get === "function") {
+    const value = Netlify.env.get("AIRTABLE_TOKEN");
+    if (value) return value;
+  }
+  return process.env.AIRTABLE_TOKEN;
+}
+
+function publicRecord(record) {
+  const source = (record && record.fields) || {};
+  const fields = {};
+  for (const name of PUBLIC_FIELDS) {
+    if (Object.prototype.hasOwnProperty.call(source, name)) fields[name] = source[name];
+  }
+  return { id: record.id, fields };
+}
 
 exports.handler = async (event) => {
-  const token = process.env.AIRTABLE_TOKEN;
+  const token = airtableToken();
   if (!token) return resp(500, { error: "Missing AIRTABLE_TOKEN env var" });
   const headers = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
 
@@ -19,11 +37,12 @@ exports.handler = async (event) => {
         const url = new URL(`${AT}/${BASE_ID}/${TABLE_ID}`);
         url.searchParams.set("view", VIEW);
         url.searchParams.set("pageSize", "100");
+        for (const name of PUBLIC_FIELDS) url.searchParams.append("fields[]", name);
         if (offset) url.searchParams.set("offset", offset);
         const r = await fetch(url, { headers });
         if (!r.ok) return resp(r.status, { error: await r.text() });
         const j = await r.json();
-        records = records.concat(j.records);
+        records = records.concat((j.records || []).map(publicRecord));
         offset = j.offset;
       } while (offset);
       return resp(200, { records });
