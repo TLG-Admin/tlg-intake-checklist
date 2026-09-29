@@ -1,0 +1,6 @@
+# Publish only the static page. Function source stays outside this directory.
+[build]
+  publish = "public"
+
+[functions]
+  directory = "netlify/functions"

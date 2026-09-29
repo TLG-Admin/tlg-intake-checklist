@@ -1,2 +1,2 @@
 # tlg-intake-checklist
-TLG-branded interactive flip-card client intake checklist. Self-contained static site for embedding in the client portal.
+TLG-branded stage-grouped checkbox list for the client intake checklist. Self-contained static page for embedding in the client portal.
