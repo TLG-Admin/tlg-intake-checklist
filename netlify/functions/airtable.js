@@ -33,6 +33,9 @@ exports.handler = async (event) => {
       const body = JSON.parse(event.body || "{}");
       if (!body.id || typeof body.done !== "boolean")
         return resp(400, { error: "id and done(boolean) required" });
+      // Record ids are exactly rec + 14 alphanumerics; reject ../ and ? so PATCH stays on this table.
+      if (!/^rec[A-Za-z0-9]{14}$/.test(body.id))
+        return resp(400, { error: "invalid record id" });
       const r = await fetch(`${AT}/${BASE_ID}/${TABLE_ID}/${body.id}`, {
         method: "PATCH",
         headers,
